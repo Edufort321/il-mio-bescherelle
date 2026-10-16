@@ -1,5 +1,5 @@
 // Il mio Bescherelle — service worker. Bump VERSION to push an update.
-const VERSION = 'bescherelle-v2';
+const VERSION = 'bescherelle-v3';
 const SHELL = ['/', '/index.html', '/manifest.webmanifest', '/icons/icon-192.png', '/icons/icon-512.png', '/icons/maskable-512.png', '/icons/apple-touch-icon.png', '/icons/favicon.png', '/icons/logo.png'];
 
 self.addEventListener('install', e => {

@@ -128,6 +128,15 @@ body.no-fr .row .fr { display: none; }
 .cue button svg { width: 20px; height: 20px; flex: none; }
 .cue button span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .card.target { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
+.install-sheet { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; padding: 0 max(12px, env(safe-area-inset-right, 0px)) calc(12px + env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left, 0px)); }
+.install-sheet .box { max-width: 520px; margin: 0 auto; background: #002D7B; color: #fff; border-radius: 16px; padding: 14px; display: grid; grid-template-columns: 56px 1fr; gap: 12px; align-items: center; box-shadow: 0 10px 40px rgba(0,0,0,.35); }
+.install-sheet img { width: 56px; height: 56px; }
+.install-sheet h4 { margin: 0; font-size: 1.05rem; }
+.install-sheet p { margin: 2px 0 0; font-size: .86rem; opacity: .85; }
+.install-sheet .acts { grid-column: 1 / -1; display: flex; gap: 8px; }
+.install-sheet button { flex: 1; border: 0; border-radius: 10px; padding: 12px; font-weight: 600; cursor: pointer; }
+.install-sheet .go { background: #FFC529; color: #002D7B; }
+.install-sheet .later { background: rgba(255,255,255,.14); color: #fff; flex: 0 0 auto; }
 .err { padding-block: 40px; font-size: 1.05rem; max-width: 60ch; }
 footer { padding-block: 34px 40px; color: var(--muted); font-size: .86rem; }
 footer h4 { margin: 0 0 6px; font-family: var(--display); font-size: 1.05rem; color: var(--ink); font-weight: 600; }
@@ -168,12 +177,13 @@ footer em { color: var(--ink); }
 <div class="wrap">
   <nav class="chips" id="chips" aria-label="Verbes modèles"></nav>
   <p class="notice" id="tts" hidden></p>
-  <p class="notice" id="iosHint" hidden>Pour installer sur iPhone : touche Partager, puis « Sur l’écran d’accueil ».</p>
+  
 </div>
 
 <main class="wrap" id="out"></main>
 <div class="cue" id="cue" hidden><button type="button" id="cueBtn"></button></div>
 
+<div class="install-sheet" id="sheet" hidden><div class="box"><img src="/icons/logo.png" alt=""><div><h4>Installer Il mio Bescherelle</h4><p id="sheetTxt">Ajoute l’app à ton écran d’accueil. Elle fonctionne aussi sans Internet.</p></div><div class="acts"><button class="go" type="button" id="sheetGo">Installer l’app</button><button class="later" type="button" id="sheetLater">Plus tard</button></div></div></div>
 <footer class="wrap">
   <h4>À retenir</h4>
   <ul>
@@ -888,26 +898,39 @@ if (typeof module !== 'undefined' && module.exports) module.exports = API; else 
 </script>
 
 <script>
-// PWA: offline cache + install button
+// PWA: offline cache + install sheet shown as soon as the page opens
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
 }
 (function () {
   const btn = document.getElementById('install');
+  const sheet = document.getElementById('sheet'), go = document.getElementById('sheetGo'), later = document.getElementById('sheetLater'), txt = document.getElementById('sheetTxt');
   let deferred = null;
   const standalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
-  window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferred = e; if (!standalone) btn.hidden = false; });
-  btn.addEventListener('click', async () => {
+  const snoozed = () => { try { return Date.now() < +(localStorage.getItem('bescherelle:snooze') || 0); } catch (e) { return false; } };
+  const hide = () => { sheet.hidden = true; };
+  async function install() {
     if (!deferred) return;
     deferred.prompt();
     try { await deferred.userChoice; } catch (e) {}
-    deferred = null; btn.hidden = true;
+    deferred = null; btn.hidden = true; hide();
+  }
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault(); deferred = e;
+    if (standalone) return;
+    btn.hidden = false;
+    if (!snoozed()) sheet.hidden = false;
   });
-  window.addEventListener('appinstalled', () => { btn.hidden = true; });
+  btn.addEventListener('click', install);
+  go.addEventListener('click', install);
+  later.addEventListener('click', () => { hide(); try { localStorage.setItem('bescherelle:snooze', String(Date.now() + 3 * 864e5)); } catch (e) {} });
+  window.addEventListener('appinstalled', () => { btn.hidden = true; hide(); });
   const ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
-  if (ios && !standalone) {
-    let seen = false; try { seen = localStorage.getItem('bescherelle:iosHint') === '1'; } catch (e) {}
-    if (!seen) { const h = document.getElementById('iosHint'); h.hidden = false; try { localStorage.setItem('bescherelle:iosHint', '1'); } catch (e) {} }
+  if (ios && !standalone && !snoozed()) {
+    txt.textContent = 'Touche Partager (carré avec flèche), puis « Sur l’écran d’accueil ».';
+    go.textContent = 'Compris';
+    go.onclick = () => later.click();
+    sheet.hidden = false;
   }
 })();
 </script>

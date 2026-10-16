@@ -1,0 +1,914 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Il mio Bescherelle</title>
+<meta name="description" content="Conjugaison italienne complète, traduite en français et prononcée.">
+<meta name="theme-color" content="#F3F4F7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E121B" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icons/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Bescherelle">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..800;1,6..96,400..700&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+html { -webkit-text-size-adjust: 100%; }
+:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body { margin: 0; }
+[hidden] { display: none !important; }
+/* Layout: a grammar handbook — Bodoni (Parma, 1798) headings over a cool printed sheet; one red for irregular forms, as a teacher's pen would mark them. */
+:root {
+  --paper: #F3F4F7;
+  --sheet: #FFFFFF;
+  --ink: #17203A;
+  --muted: #5B6480;
+  --rule: #DADEE8;
+  --accent: #B3241F;
+  --accent-soft: #F7E3E1;
+  --hi: #E9EDF8;
+  --display: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+  --text: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0E121B; --sheet: #161B27; --ink: #E6E9F2; --muted: #98A1B9; --rule: #273045;
+    --accent: #FF8A80; --accent-soft: #3B2024; --hi: #222B40; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0E121B; --sheet: #161B27; --ink: #E6E9F2; --muted: #98A1B9; --rule: #273045;
+  --accent: #FF8A80; --accent-soft: #3B2024; --hi: #222B40; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font-family: var(--text); font-size: 15px; line-height: 1.5; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper); }
+.wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+.masthead { padding-block: 22px 6px; display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.brand { font-family: var(--display); font-style: italic; font-weight: 600; font-size: 1.6rem; letter-spacing: -0.01em; margin: 0; }
+.brand b { font-style: normal; color: var(--accent); font-weight: 700; }
+.tag { margin: 0; color: var(--muted); font-size: .85rem; }
+
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--paper); border-bottom: 1px solid var(--rule); }
+.bar .wrap { padding-block: 10px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.search { flex: 1 1 260px; display: flex; gap: 8px; min-width: 0; }
+.search input { flex: 1; min-width: 0; font: 500 1rem var(--text); color: var(--ink); background: var(--sheet); border: 1px solid var(--rule); border-radius: 8px; padding: 10px 12px; }
+.search input:focus { outline: none; border-color: var(--accent); }
+.btn { border: 1px solid var(--rule); background: var(--sheet); border-radius: 8px; padding: 9px 13px; cursor: pointer; font-weight: 500; white-space: nowrap; }
+.btn:hover { border-color: var(--muted); }
+.btn.primary { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.speed { display: inline-flex; border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; background: var(--sheet); }
+.speed button { border: 0; background: none; padding: 9px 11px; cursor: pointer; font-size: .85rem; color: var(--muted); }
+.speed button[aria-pressed="true"] { background: var(--hi); color: var(--ink); font-weight: 600; }
+
+.chips { display: flex; gap: 6px; flex-wrap: wrap; padding-block: 12px 4px; }
+.chip { border: 1px solid var(--rule); background: transparent; border-radius: 999px; padding: 4px 11px; font-size: .85rem; cursor: pointer; font-style: italic; font-family: var(--display); }
+.chip:hover, .chip[aria-current="true"] { border-color: var(--ink); background: var(--sheet); }
+
+.notice { margin: 10px 0 0; padding: 10px 12px; border-radius: 8px; background: var(--accent-soft); color: var(--ink); font-size: .88rem; }
+
+.hero { padding-block: 26px 10px; display: grid; gap: 6px; }
+.eyebrow { margin: 0; text-transform: uppercase; letter-spacing: .09em; font-size: .72rem; font-weight: 600; color: var(--muted); }
+.inf-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.inf { margin: 0; font-family: var(--display); font-style: italic; font-weight: 500; font-size: clamp(2.6rem, 9vw, 4.6rem); line-height: 1; letter-spacing: -0.02em; text-wrap: balance; }
+.gloss { margin: 2px 0 0; font-size: 1.1rem; color: var(--muted); }
+.say-big { display: inline-flex; align-items: center; gap: 8px; border: 0; background: var(--accent); color: #fff; border-radius: 999px; padding: 9px 16px 9px 12px; cursor: pointer; font-weight: 600; }
+.say-big svg { width: 18px; height: 18px; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 12px 0 0; padding: 0; }
+.facts div { display: grid; gap: 0; }
+.facts dt { font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 600; }
+.facts dd { margin: 0; font-weight: 500; }
+.note { margin: 6px 0 0; color: var(--muted); font-size: .88rem; max-width: 65ch; }
+.legend { display: inline-flex; gap: 6px; align-items: center; font-size: .82rem; color: var(--muted); }
+.legend i { font-style: normal; color: var(--accent); font-weight: 600; }
+
+.mood { padding-block: 22px 4px; }
+.mood h2 { margin: 0 0 12px; font-family: var(--display); font-weight: 600; font-size: 1.7rem; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; border-bottom: 2px solid var(--ink); padding-bottom: 6px; }
+.mood h2 span { font-family: var(--text); font-size: .8rem; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; }
+.card { background: var(--sheet); border: 1px solid var(--rule); border-radius: 10px; padding: 12px 12px 8px; min-width: 0; }
+.card header { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 4px; }
+.card h3 { margin: 0; font-family: var(--display); font-weight: 600; font-size: 1.12rem; line-height: 1.2; }
+.card h3 small { display: block; font-family: var(--text); font-weight: 500; font-size: .74rem; color: var(--muted); letter-spacing: .02em; }
+.card.compound h3 { font-style: italic; font-weight: 500; }
+.play { flex: none; width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--rule); background: var(--paper); cursor: pointer; display: grid; place-items: center; }
+.play:hover { border-color: var(--accent); color: var(--accent); }
+.play svg { width: 15px; height: 15px; }
+.card ol { list-style: none; margin: 0; padding: 0; }
+.row { width: 100%; display: grid; grid-template-columns: 4.6em 1fr 16px; gap: 6px; align-items: baseline; text-align: left; background: none; border: 0; border-radius: 6px; padding: 5px 4px; cursor: pointer; }
+.row:hover { background: var(--hi); }
+.row .p { color: var(--muted); font-size: .86rem; }
+.row .fw { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 10px; min-width: 0; }
+.row .f { font-weight: 500; overflow-wrap: anywhere; }
+.row .fr { color: var(--muted); font-size: .84rem; font-style: italic; overflow-wrap: anywhere; }
+body.no-fr .row .fr { display: none; }
+.row .f.irr { color: var(--accent); font-weight: 600; }
+.row .ic { opacity: 0; color: var(--muted); align-self: center; }
+.row .ic svg { width: 14px; height: 14px; display: block; }
+.row:hover .ic, .row.speaking .ic { opacity: 1; }
+.row.speaking { background: var(--hi); }
+.row.speaking .ic { color: var(--accent); }
+.che .row { grid-template-columns: 6.4em 1fr 16px; }
+.imp .row { grid-template-columns: 3.4em 1fr 16px; }
+.empty { color: var(--muted); font-size: .9rem; margin: 6px 4px; }
+
+.indef .row { grid-template-columns: minmax(8.5em, auto) 1fr 16px; }
+
+.cue { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; display: flex; justify-content: center; padding: 12px max(16px, env(safe-area-inset-right, 0px)) calc(12px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); pointer-events: none; }
+.cue button { pointer-events: auto; display: inline-flex; align-items: center; gap: 10px; max-width: 100%; border: 0; border-radius: 999px; background: var(--accent); color: #fff; font-weight: 600; font-size: 1rem; padding: 13px 20px 13px 16px; cursor: pointer; box-shadow: 0 6px 24px rgba(0,0,0,.25); }
+.cue button svg { width: 20px; height: 20px; flex: none; }
+.cue button span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.card.target { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
+.err { padding-block: 40px; font-size: 1.05rem; max-width: 60ch; }
+footer { padding-block: 34px 40px; color: var(--muted); font-size: .86rem; }
+footer h4 { margin: 0 0 6px; font-family: var(--display); font-size: 1.05rem; color: var(--ink); font-weight: 600; }
+footer ul { margin: 0; padding-left: 18px; max-width: 70ch; display: grid; gap: 4px; }
+footer em { color: var(--ink); }
+@media (max-width: 480px) {
+  .grid { grid-template-columns: 1fr; }
+  .speed { order: 3; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<div class="wrap masthead">
+  <p class="brand">Il mio <b>B</b>escherelle</p>
+  <p class="tag">Les verbes italiens, conjugués, traduits et prononcés</p>
+</div>
+
+<div class="bar">
+  <div class="wrap">
+    <form class="search" id="f" autocomplete="off">
+      <label for="verbo" class="sr" hidden>Verbe</label>
+      <input id="verbo" list="verbi" placeholder="parlare, andare, alzarsi…" autocapitalize="none" spellcheck="false" enterkeyhint="go">
+      <button class="btn primary" type="submit">Coniuga</button>
+    </form>
+    <button class="btn" id="caso" type="button">Au hasard</button>
+    <button class="btn primary" id="install" type="button" hidden>Installer l’app</button>
+    <button class="btn" id="frBtn" type="button" aria-pressed="true">Français : oui</button>
+    <div class="speed" role="group" aria-label="Vitesse de lecture">
+      <button type="button" data-rate="0.95" aria-pressed="true">Normal</button>
+      <button type="button" data-rate="0.65" aria-pressed="false">Lent</button>
+    </div>
+  </div>
+</div>
+<datalist id="verbi"></datalist>
+
+<div class="wrap">
+  <nav class="chips" id="chips" aria-label="Verbes modèles"></nav>
+  <p class="notice" id="tts" hidden></p>
+  <p class="notice" id="iosHint" hidden>Pour installer sur iPhone : touche Partager, puis « Sur l’écran d’accueil ».</p>
+</div>
+
+<main class="wrap" id="out"></main>
+<div class="cue" id="cue" hidden><button type="button" id="cueBtn"></button></div>
+
+<footer class="wrap">
+  <h4>À retenir</h4>
+  <ul>
+    <li>Impératif négatif à <em>tu</em> : <em>non</em> + infinitif (<em>non parlare!</em>, <em>non ti alzare!</em>).</li>
+    <li>Avec <em>essere</em>, le participe s’accorde avec le sujet : <em>è andato</em> / <em>è andata</em>, <em>sono andati</em> / <em>sono andate</em>.</li>
+    <li>Le <em>passato remoto</em> sert surtout à l’écrit et dans le Sud ; à l’oral, le <em>passato prossimo</em> domine.</li>
+    <li>Les verbes absents de la liste sont conjugués selon le modèle régulier. Vérifie le passé simple et le participe des verbes en -ere, souvent irréguliers.</li>
+    <li>La traduction française suit le même temps que l’italien ; le subjonctif imparfait (que je parlasse) est littéraire en français, alors qu’il est courant en italien (se parlassi = si je parlais).</li>
+    <li>La prononciation utilise la voix italienne de ton appareil.</li>
+  </ul>
+</footer>
+
+<script>
+(function (G) {
+'use strict';
+const W = s => s.trim().split(/\s+/);
+const A = (p, s) => W(s).map(x => p + x);
+const PS = { a: W('ai as a âmes âtes èrent'), i: W('is is it îmes îtes irent'), u: W('us us ut ûmes ûtes urent'), in: W('ins ins int înmes întes inrent') };
+const FUT = W('ai as a ons ez ont'), COND = W('ais ais ait ions iez aient');
+const ETRE = new Set(W('aller venir devenir revenir intervenir parvenir provenir arriver partir repartir entrer rentrer sortir rester tomber naître mourir monter descendre retourner apparaître décéder'));
+const DOUBLE = new Set(W('appeler rappeler jeter rejeter épeler renouveler'));
+const DORMIR = new Set(W('dormir endormir partir repartir sortir sentir ressentir servir mentir'));
+const VOW = /^[aeiouyhâàéèêîïôûœ]/i;
+
+const FULL = {
+  'être': { pres: W('suis es est sommes êtes sont'), imperf: W('étais étais était étions étiez étaient'), ps: { t: 'u', s: 'f' }, fut: 'ser',
+    subj: W('sois sois soit soyons soyez soient'), pp: 'été', ger: 'étant', imper: W('sois soyons soyez') },
+  'avoir': { pres: W('ai as a avons avez ont'), ps: { t: 'u', s: 'e' }, fut: 'aur', subj: W('aie aies ait ayons ayez aient'), pp: 'eu', ger: 'ayant', imper: W('aie ayons ayez') },
+  'aller': { pres: W('vais vas va allons allez vont'), ps: { t: 'a', s: 'all' }, fut: 'ir', subj: W('aille ailles aille allions alliez aillent'), pp: 'allé', imper: W('va allons allez') },
+  'faire': { pres: W('fais fais fait faisons faites font'), ps: { t: 'i', s: 'f' }, fut: 'fer', subj: W('fasse fasses fasse fassions fassiez fassent'), pp: 'fait', imper: W('fais faisons faites') },
+  'pouvoir': { pres: W('peux peux peut pouvons pouvez peuvent'), ps: { t: 'u', s: 'p' }, fut: 'pourr', subj: W('puisse puisses puisse puissions puissiez puissent'), pp: 'pu', imper: null },
+  'vouloir': { pres: W('veux veux veut voulons voulez veulent'), ps: { t: 'u', s: 'voul' }, fut: 'voudr', subj: W('veuille veuilles veuille voulions vouliez veuillent'), pp: 'voulu', imper: W('veuille veuillons veuillez') },
+  'devoir': { pres: W('dois dois doit devons devez doivent'), ps: { t: 'u', s: 'd' }, fut: 'devr', pp: 'dû', imper: W('dois devons devez') },
+  'savoir': { pres: W('sais sais sait savons savez savent'), ps: { t: 'u', s: 's' }, fut: 'saur', subj: W('sache saches sache sachions sachiez sachent'), pp: 'su', ger: 'sachant', imper: W('sache sachons sachez') },
+  'dire': { pres: W('dis dis dit disons dites disent'), ps: { t: 'i', s: 'd' }, pp: 'dit', imper: W('dis disons dites') },
+  'lire': { pres: W('lis lis lit lisons lisez lisent'), ps: { t: 'u', s: 'l' }, pp: 'lu' },
+  'croire': { pres: W('crois crois croit croyons croyez croient'), ps: { t: 'u', s: 'cr' }, pp: 'cru' },
+  'boire': { pres: W('bois bois boit buvons buvez boivent'), ps: { t: 'u', s: 'b' }, pp: 'bu' },
+  'naître': { pres: W('nais nais naît naissons naissez naissent'), ps: { t: 'i', s: 'naqu' }, pp: 'né' },
+  'mourir': { pres: W('meurs meurs meurt mourons mourez meurent'), ps: { t: 'u', s: 'mour' }, fut: 'mourr', pp: 'mort' },
+};
+
+const SUF = [
+  ['prendre', p => ({ pres: A(p, 'prends prends prend prenons prenez prennent'), ps: { t: 'i', s: p + 'pr' }, pp: p + 'pris' })],
+  ['mettre', p => ({ pres: A(p, 'mets mets met mettons mettez mettent'), ps: { t: 'i', s: p + 'm' }, pp: p + 'mis' })],
+  ['tenir', p => ({ pres: A(p, 'tiens tiens tient tenons tenez tiennent'), ps: { t: 'in', s: p + 't' }, fut: p + 'tiendr', pp: p + 'tenu' })],
+  ['venir', p => ({ pres: A(p, 'viens viens vient venons venez viennent'), ps: { t: 'in', s: p + 'v' }, fut: p + 'viendr', pp: p + 'venu' })],
+  ['crire', p => ({ pres: A(p, 'cris cris crit crivons crivez crivent'), ps: { t: 'i', s: p + 'criv' }, pp: p + 'crit' })],
+  ['uire', p => ({ pres: A(p, 'uis uis uit uisons uisez uisent'), ps: { t: 'i', s: p + 'uis' }, pp: p + 'uit' })],
+  ['eindre', p => ({ pres: A(p, 'eins eins eint eignons eignez eignent'), ps: { t: 'i', s: p + 'eign' }, pp: p + 'eint' })],
+  ['aindre', p => ({ pres: A(p, 'ains ains aint aignons aignez aignent'), ps: { t: 'i', s: p + 'aign' }, pp: p + 'aint' })],
+  ['oindre', p => ({ pres: A(p, 'oins oins oint oignons oignez oignent'), ps: { t: 'i', s: p + 'oign' }, pp: p + 'oint' })],
+  ['aître', p => ({ pres: A(p, 'ais ais aît aissons aissez aissent'), ps: { t: 'u', s: p }, pp: p + 'u' })],
+  ['cueillir', p => ({ pres: A(p, 'cueille cueilles cueille cueillons cueillez cueillent'), ps: { t: 'i', s: p + 'cueill' }, fut: p + 'cueiller', pp: p + 'cueilli' })],
+  ['vrir', p => ({ pres: A(p, 'vre vres vre vrons vrez vrent'), ps: { t: 'i', s: p + 'vr' }, pp: p + 'vert' })],
+  ['frir', p => ({ pres: A(p, 'fre fres fre frons frez frent'), ps: { t: 'i', s: p + 'fr' }, pp: p + 'fert' })],
+  ['cevoir', p => ({ pres: A(p, 'çois çois çoit cevons cevez çoivent'), ps: { t: 'u', s: p + 'ç' }, fut: p + 'cevr', pp: p + 'çu' })],
+  ['valoir', p => ({ pres: A(p, 'vaux vaux vaut valons valez valent'), ps: { t: 'u', s: p + 'val' }, fut: p + 'vaudr', pp: p + 'valu',
+    subj: A(p, 'vaille vailles vaille valions valiez vaillent') })],
+  ['asseoir', p => ({ pres: A(p, 'assieds assieds assied asseyons asseyez asseyent'), ps: { t: 'i', s: p + 'ass' }, fut: p + 'assiér', pp: p + 'assis' })],
+  ['voir', p => ({ pres: A(p, 'vois vois voit voyons voyez voient'), ps: { t: 'i', s: p + 'v' }, fut: p === 'pré' ? 'prévoir' : p + 'verr', pp: p + 'vu' })],
+  ['traire', p => ({ pres: A(p, 'trais trais trait trayons trayez traient'), ps: null, pp: p + 'trait' })],
+  ['battre', p => ({ pres: A(p, 'bats bats bat battons battez battent'), ps: { t: 'i', s: p + 'batt' }, pp: p + 'battu' })],
+  ['rompre', p => ({ pres: A(p, 'romps romps rompt rompons rompez rompent'), ps: { t: 'i', s: p + 'romp' }, pp: p + 'rompu' })],
+  ['suivre', p => ({ pres: A(p, 'suis suis suit suivons suivez suivent'), ps: { t: 'i', s: p + 'suiv' }, pp: p + 'suivi' })],
+  ['vivre', p => ({ pres: A(p, 'vis vis vit vivons vivez vivent'), ps: { t: 'u', s: p + 'véc' }, pp: p + 'vécu' })],
+  ['rire', p => ({ pres: A(p, 'ris ris rit rions riez rient'), ps: { t: 'i', s: p + 'r' }, pp: p + 'ri' })],
+  ['courir', p => ({ pres: A(p, 'cours cours court courons courez courent'), ps: { t: 'u', s: p + 'cour' }, fut: p + 'courr', pp: p + 'couru' })],
+  ['fuir', p => ({ pres: A(p, 'fuis fuis fuit fuyons fuyez fuient'), ps: { t: 'i', s: p + 'fu' }, pp: p + 'fui' })],
+  ['vaincre', p => ({ pres: A(p, 'vaincs vaincs vainc vainquons vainquez vainquent'), ps: { t: 'i', s: p + 'vainqu' }, pp: p + 'vaincu' })],
+  ['plaire', p => ({ pres: A(p, 'plais plais plaît plaisons plaisez plaisent'), ps: { t: 'u', s: p + 'pl' }, pp: p + 'plu' })],
+  ['taire', p => ({ pres: A(p, 'tais tais tait taisons taisez taisent'), ps: { t: 'u', s: p + 't' }, pp: p + 'tu' })],
+  ['suffire', p => ({ pres: A(p, 'suffis suffis suffit suffisons suffisez suffisent'), ps: { t: 'i', s: p + 'suff' }, pp: p + 'suffi' })],
+];
+
+function erSpec(inf) {
+  const s = inf.slice(0, -2);
+  let mute = s, fut = inf;
+  if (/envoyer$/.test(inf)) { mute = s.slice(0, -1) + 'i'; fut = inf.replace(/voyer$/, 'verr'); }
+  else if (/[aou]yer$/.test(inf)) { mute = s.slice(0, -1) + 'i'; fut = mute + 'er'; }
+  else if (DOUBLE.has(inf)) { mute = s + s.slice(-1); fut = mute + 'er'; }
+  else if (/e[^aeiouyéèêâîôû]$/.test(s)) { mute = s.replace(/e([^aeiouyéèêâîôû])$/, 'è$1'); fut = mute + 'er'; }
+  else if (/é[^aeiouyéèêâîôû]+$/.test(s)) { mute = s.replace(/é([^aeiouyéèêâîôû]+)$/, 'è$1'); }
+  const h = e => (/^[aâo]/.test(e) ? (s.endsWith('c') ? s.slice(0, -1) + 'ç' : s.endsWith('g') ? s + 'e' : s) : s) + e;
+  return {
+    pres: [mute + 'e', mute + 'es', mute + 'e', h('ons'), s + 'ez', mute + 'ent'],
+    impS: s, imperf: [h('ais'), h('ais'), h('ait'), s + 'ions', s + 'iez', h('aient')],
+    ps: [h('ai'), h('as'), h('a'), h('âmes'), h('âtes'), s + 'èrent'],
+    fut, subj: [mute + 'e', mute + 'es', mute + 'e', s + 'ions', s + 'iez', mute + 'ent'],
+    imper: [mute + 'e', h('ons'), s + 'ez'], ger: h('ant'), pp: s + 'é',
+  };
+}
+function g2(inf) { const s = inf.slice(0, -2); return { pres: [s + 'is', s + 'is', s + 'it', s + 'issons', s + 'issez', s + 'issent'], ps: { t: 'i', s }, pp: s + 'i' }; }
+function dorm(inf) { const s = inf.slice(0, -2), g = s.slice(0, -1); return { pres: [g + 's', g + 's', g + 't', s + 'ons', s + 'ez', s + 'ent'], ps: { t: 'i', s }, pp: s + 'i' }; }
+function reSpec(inf) { const s = inf.slice(0, -2), il = /[dt]$/.test(s) ? s : s + 't'; return { pres: [s + 's', s + 's', il, s + 'ons', s + 'ez', s + 'ent'], ps: { t: 'i', s }, pp: s + 'u' }; }
+
+const circ = b => b.replace(/([aiu])([^aiu]*)$/, (m, v, r) => ({ a: 'â', i: 'î', u: 'û' }[v]) + r);
+
+const memo = {};
+function base(inf) {
+  if (inf in memo) return memo[inf];
+  let sp = FULL[inf];
+  if (!sp) for (const [suf, fn] of SUF) if (inf.endsWith(suf)) { sp = fn(inf.slice(0, -suf.length)); break; }
+  if (!sp) {
+    if (/er$/.test(inf)) sp = erSpec(inf);
+    else if (DORMIR.has(inf)) sp = dorm(inf);
+    else if (/ir$/.test(inf)) sp = g2(inf);
+    else if (/re$/.test(inf)) sp = reSpec(inf);
+    else return (memo[inf] = null);
+  }
+  const pres = sp.pres;
+  const impS = sp.impS || pres[3].replace(/ons$/, '');
+  const ps = !sp.ps ? null : Array.isArray(sp.ps) ? sp.ps : PS[sp.ps.t].map(e => sp.ps.s + e);
+  const futS = sp.fut || (/re$/.test(inf) ? inf.slice(0, -1) : inf);
+  const sg = pres[5].replace(/ent$/, '');
+  const b = ps ? ps[1].slice(0, -1) : null;
+  return (memo[inf] = {
+    inf, pres, ps, pp: sp.pp,
+    imperf: sp.imperf || COND.map(e => impS + e),
+    fut: FUT.map(e => futS + e), cond: COND.map(e => futS + e),
+    subj: sp.subj || [sg + 'e', sg + 'es', sg + 'e', impS + 'ions', impS + 'iez', sg + 'ent'],
+    subjImp: b ? [b + 'sse', b + 'sses', circ(b) + 't', b + 'ssions', b + 'ssiez', b + 'ssent'] : null,
+    imper: sp.imper === null ? null : (sp.imper || [pres[1].replace(/es$/, 'e'), pres[3], pres[4]]),
+    ger: sp.ger || impS + 'ant',
+    aux: ETRE.has(inf) ? 'être' : 'avoir',
+  });
+}
+
+const SUBJ_P = ['je', 'tu', 'il/elle', 'nous', 'vous', 'ils/elles'];
+const REFL_P = ['me', 'te', 'se', 'nous', 'vous', 'se'];
+
+function tables(gloss) {
+  if (!gloss) return null;
+  let g = gloss.split(',')[0].replace(/\(.*?\)/g, '').replace(/[’`]/g, "'").trim();
+  let pron = false;
+  const m = g.match(/^(?:se |s')(.+)$/);
+  if (m) { pron = true; g = m[1]; }
+  const parts = g.split(/\s+/);
+  const inf = parts[0], rest = parts.length > 1 ? ' ' + parts.slice(1).join(' ') : '';
+  if (inf === 'pleuvoir') return null;
+  const B = base(inf);
+  if (!B) return null;
+  const aux = pron ? 'être' : B.aux;
+  const X = base(aux);
+  const agree = (i) => aux !== 'être' ? B.pp : B.pp + (i < 3 ? '(e)' : B.pp.endsWith('s') ? '(es)' : '(e)s');
+  const person = (i, v, que) => {
+    if (v == null) return null;
+    if (pron) v = ([0, 1, 2, 5].includes(i) && VOW.test(v)) ? REFL_P[i][0] + "'" + v : REFL_P[i] + ' ' + v;
+    let s = (i === 0 && VOW.test(v)) ? "j'" + v : SUBJ_P[i] + ' ' + v;
+    if (que) s = s.startsWith('il') ? "qu'" + s : 'que ' + s;
+    return s + rest;
+  };
+  const simple = (arr, que) => arr ? arr.map((v, i) => person(i, v, que)) : [0, 1, 2, 3, 4, 5].map(() => '—');
+  const comp = (arr, que) => arr ? arr.map((v, i) => person(i, v + ' ' + agree(i), que)) : [0, 1, 2, 3, 4, 5].map(() => '—');
+  let imper = null;
+  if (B.imper) {
+    const [tu, nous, vous] = B.imper;
+    const r = (v, p) => (pron ? v + '-' + p : v) + rest;
+    imper = [null, r(tu, 'toi'), r(vous, 'vous'), r(nous, 'nous'), r(vous, 'vous'), r(vous, 'vous')];
+  }
+  const ppA = aux === 'être' ? B.pp + '(e)' : B.pp;
+  const se = v => pron ? (VOW.test(v) ? "s'" : 'se ') + v : v;
+  return {
+    inf: se(inf) + rest,
+    pres: simple(B.pres), imperf: simple(B.imperf), rem: simple(B.ps), fut: simple(B.fut),
+    pp: comp(X.pres), tpp: comp(X.imperf), tpr: comp(X.ps), fa: comp(X.fut),
+    cong: simple(B.subj, 1), congImp: simple(B.subjImp, 1), cp: comp(X.subj, 1), ctp: comp(X.subjImp, 1),
+    cond: simple(B.cond), condp: comp(X.cond),
+    imper,
+    indef: [
+      se(inf) + rest,
+      (pron ? "s'être " : aux === 'être' ? 'être ' : 'avoir ') + ppA + rest,
+      'en ' + se(B.ger) + rest,
+      'en ' + (pron ? "s'étant " : aux === 'être' ? 'étant ' : 'ayant ') + ppA + rest,
+      B.pp,
+    ],
+  };
+}
+
+const API = { tables, base };
+if (typeof module !== 'undefined' && module.exports) module.exports = API; else G.Francese = API;
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script>
+(function (G) {
+'use strict';
+const W = s => s.trim().split(/\s+/);
+const PERS = ['io', 'tu', 'lui/lei', 'noi', 'voi', 'loro'];
+const RIFL = ['mi', 'ti', 'si', 'ci', 'vi', 'si'];
+
+const ISC = new Set(W(`finire capire preferire pulire spedire costruire colpire sostituire unire obbedire ubbidire
+ gestire impedire suggerire tradire guarire dimagrire arrossire fiorire fornire garantire inserire istruire restituire
+ sparire stabilire trasferire contribuire definire distribuire favorire ferire condire agire reagire chiarire impazzire
+ ingrandire abolire aderire approfondire attribuire digerire diminuire esaurire interferire partorire percepire proibire
+ punire rapire riferire smarrire svanire zittire arricchire impallidire intuire marcire ammonire demolire infastidire
+ scolpire stupire tossire capire ingerire`));
+const STRESSED_I = new Set(W('inviare sciare spiare avviare rinviare deviare'));
+const ESSERE = new Set(W(`essere andare venire arrivare partire tornare ritornare entrare uscire riuscire restare rimanere
+ stare nascere morire diventare divenire cadere accadere scadere piacere dispiacere sembrare apparire comparire sparire
+ scomparire svanire durare costare bastare mancare capitare succedere esistere dipendere crescere salire scendere giungere
+ fuggire emergere sorgere guarire dimagrire ingrassare invecchiare impazzire arrossire avvenire intervenire provenire svenire
+ convenire rinascere sopravvivere occorrere accorrere evadere scappare valere impallidire`));
+const ALSO_AVERE = new Set(W('salire scendere crescere guarire invecchiare dimagrire ingrassare'));
+const ALSO_ESSERE = new Set(W('passare cominciare iniziare finire terminare cambiare aumentare diminuire correre vivere'));
+
+// Irregular models. rem:{s} = strong passato remoto (io/lui/loro), the rest built on the imperfect stem.
+const IRR = {
+ essere: { cls: 'ere', aux: 'essere', pres: W('sono sei è siamo siete sono'), imperf: W('ero eri era eravamo eravate erano'),
+   rem: W('fui fosti fu fummo foste furono'), fut: 'sar', cong: W('sia sia sia siamo siate siano'), ciX: 'fo',
+   imper: [null, 'sii', 'sia', 'siamo', 'siate', 'siano'], ger: 'essendo', part: 'stato' },
+ avere: { aux: 'avere', pres: W('ho hai ha abbiamo avete hanno'), rem: { s: 'ebb' }, fut: 'avr',
+   cong: W('abbia abbia abbia abbiamo abbiate abbiano'), imper: [null, 'abbi', 'abbia', 'abbiamo', 'abbiate', 'abbiano'] },
+ andare: { pres: W('vado vai va andiamo andate vanno'), fut: 'andr', imper: [null, "va'", 'vada', 'andiamo', 'andate', 'vadano'] },
+ dare: { pres: W('do dai dà diamo date danno'), rem: W('diedi desti diede demmo deste diedero'), fut: 'dar',
+   cong: W('dia dia dia diamo diate diano'), ciX: 'de', imper: [null, "da'", 'dia', 'diamo', 'date', 'diano'] },
+ stare: { pres: W('sto stai sta stiamo state stanno'), rem: W('stetti stesti stette stemmo steste stettero'), fut: 'star',
+   cong: W('stia stia stia stiamo stiate stiano'), ciX: 'ste', imper: [null, "sta'", 'stia', 'stiamo', 'state', 'stiano'] },
+ fare: { cls: 'ere', pres: W('faccio fai fa facciamo fate fanno'), impX: 'face', rem: { s: 'fec' }, fut: 'far', part: 'fatto',
+   ger: 'facendo', imper: [null, "fa'", 'faccia', 'facciamo', 'fate', 'facciano'] },
+ dire: { pres: W('dico dici dice diciamo dite dicono'), impX: 'dice', rem: { s: 'diss' }, fut: 'dir', part: 'detto',
+   ger: 'dicendo', imper: [null, "di'", 'dica', 'diciamo', 'dite', 'dicano'] },
+ bere: { pres: W('bevo bevi beve beviamo bevete bevono'), impX: 'beve', rem: { s: 'bevv' }, fut: 'berr', part: 'bevuto', ger: 'bevendo' },
+ venire: { pres: W('vengo vieni viene veniamo venite vengono'), rem: { s: 'venn' }, fut: 'verr', part: 'venuto' },
+ tenere: { pres: W('tengo tieni tiene teniamo tenete tengono'), rem: { s: 'tenn' }, fut: 'terr' },
+ rimanere: { pres: W('rimango rimani rimane rimaniamo rimanete rimangono'), rem: { s: 'rimas' }, fut: 'rimarr', part: 'rimasto' },
+ potere: { pres: W('posso puoi può possiamo potete possono'), fut: 'potr', imper: null },
+ volere: { pres: W('voglio vuoi vuole vogliamo volete vogliono'), rem: { s: 'voll' }, fut: 'vorr',
+   imper: [null, 'vogli', 'voglia', 'vogliamo', 'vogliate', 'vogliano'] },
+ dovere: { pres: W('devo devi deve dobbiamo dovete devono'), fut: 'dovr', cong: W('debba debba debba dobbiamo dobbiate debbano'), imper: null },
+ sapere: { pres: W('so sai sa sappiamo sapete sanno'), rem: { s: 'sepp' }, fut: 'sapr', cong: W('sappia sappia sappia sappiamo sappiate sappiano'),
+   imper: [null, 'sappi', 'sappia', 'sappiamo', 'sappiate', 'sappiano'] },
+ uscire: { pres: W('esco esci esce usciamo uscite escono') },
+ morire: { pres: W('muoio muori muore moriamo morite muoiono'), fut: 'morr', part: 'morto' },
+ nascere: { rem: { s: 'nacqu' }, part: 'nato' },
+ piacere: { pres: W('piaccio piaci piace piacciamo piacete piacciono'), rem: { s: 'piacqu' } },
+ tacere: { pres: W('taccio taci tace tacciamo tacete tacciono'), rem: { s: 'tacqu' } },
+ vedere: { rem: { s: 'vid' }, fut: 'vedr', part: 'visto' },
+ prendere: { rem: { s: 'pres' }, part: 'preso' },
+ mettere: { rem: { s: 'mis' }, part: 'messo' },
+ leggere: { rem: { s: 'less' }, part: 'letto' },
+ scrivere: { rem: { s: 'scriss' }, part: 'scritto' },
+ chiudere: { rem: { s: 'chius' }, part: 'chiuso' },
+ correre: { rem: { s: 'cors' }, part: 'corso' },
+ decidere: { rem: { s: 'decis' }, part: 'deciso' },
+ chiedere: { rem: { s: 'chies' }, part: 'chiesto' },
+ rispondere: { rem: { s: 'rispos' }, part: 'risposto' },
+ perdere: { rem: { s: 'pers' }, part: 'perso' },
+ ridere: { rem: { s: 'ris' }, part: 'riso' },
+ vincere: { rem: { s: 'vins' }, part: 'vinto' },
+ vivere: { rem: { s: 'viss' }, part: 'vissuto', fut: 'vivr' },
+ conoscere: { rem: { s: 'conobb' } },
+ crescere: { rem: { s: 'crebb' } },
+ scendere: { rem: { s: 'sces' }, part: 'sceso' },
+ spendere: { rem: { s: 'spes' }, part: 'speso' },
+ accendere: { rem: { s: 'acces' }, part: 'acceso' },
+ rendere: { rem: { s: 'res' }, part: 'reso' },
+ tendere: { rem: { s: 'tes' }, part: 'teso' },
+ scegliere: { pres: W('scelgo scegli sceglie scegliamo scegliete scelgono'), rem: { s: 'scels' }, part: 'scelto' },
+ cogliere: { pres: W('colgo cogli coglie cogliamo cogliete colgono'), rem: { s: 'cols' }, part: 'colto' },
+ togliere: { pres: W('tolgo togli toglie togliamo togliete tolgono'), rem: { s: 'tols' }, part: 'tolto' },
+ salire: { pres: W('salgo sali sale saliamo salite salgono') },
+ parire: { hidden: true, pres: W('paio pari pare pariamo parite paiono'), rem: { s: 'pars' }, part: 'parso' },
+ aprire: { part: 'aperto' }, coprire: { part: 'coperto' }, offrire: { part: 'offerto' }, soffrire: { part: 'sofferto' },
+ cadere: { rem: { s: 'cadd' }, fut: 'cadr' },
+ durre: { hidden: true, cls: 'ere', pres: W('duco duci duce duciamo ducete ducono'), impX: 'duce', rem: { s: 'duss' }, fut: 'durr',
+   part: 'dotto', ger: 'ducendo' },
+ porre: { cls: 'ere', pres: W('pongo poni pone poniamo ponete pongono'), impX: 'pone', rem: { s: 'pos' }, fut: 'porr', part: 'posto', ger: 'ponendo' },
+ trarre: { cls: 'ere', pres: W('traggo trai trae traiamo traete traggono'), impX: 'trae', rem: { s: 'trass' }, fut: 'trarr', part: 'tratto', ger: 'traendo' },
+ sedere: { pres: W('siedo siedi siede sediamo sedete siedono') },
+ valere: { pres: W('valgo vali vale valiamo valete valgono'), rem: { s: 'vals' }, fut: 'varr', part: 'valso' },
+ muovere: { rem: { s: 'moss' }, part: 'mosso' },
+ giungere: { rem: { s: 'giuns' }, part: 'giunto' },
+ piangere: { rem: { s: 'pians' }, part: 'pianto' },
+ dipingere: { rem: { s: 'dipins' }, part: 'dipinto' },
+ spingere: { rem: { s: 'spins' }, part: 'spinto' },
+ rompere: { rem: { s: 'rupp' }, part: 'rotto' },
+ nascondere: { rem: { s: 'nascos' }, part: 'nascosto' },
+ succedere: { rem: { s: 'success' }, part: 'successo' },
+ discutere: { rem: { s: 'discuss' }, part: 'discusso' },
+ dipendere: { rem: { s: 'dipes' }, part: 'dipeso' },
+ difendere: { rem: { s: 'difes' }, part: 'difeso' },
+ offendere: { rem: { s: 'offes' }, part: 'offeso' },
+ uccidere: { rem: { s: 'uccis' }, part: 'ucciso' },
+ dividere: { rem: { s: 'divis' }, part: 'diviso' },
+ correggere: { rem: { s: 'corress' }, part: 'corretto' },
+ proteggere: { rem: { s: 'protess' }, part: 'protetto' },
+ distruggere: { rem: { s: 'distruss' }, part: 'distrutto' },
+ assumere: { rem: { s: 'assuns' }, part: 'assunto' },
+ esprimere: { rem: { s: 'espress' }, part: 'espresso' },
+ spegnere: { pres: W('spengo spegni spegne spegniamo spegnete spengono'), rem: { s: 'spens' }, part: 'spento' },
+ riempire: { pres: W('riempio riempi riempie riempiamo riempite riempiono') },
+ sorgere: { rem: { s: 'sors' }, part: 'sorto' },
+ emergere: { rem: { s: 'emers' }, part: 'emerso' },
+ piovere: { rem: { s: 'piovv' } },
+};
+
+const DERIV = {
+ venire: 'av con di inter pro s', tenere: 'appar at con de man ot ri sos trat intrat', porre: 'com pro es im sup dis op de ri',
+ durre: 'tra pro con ri intro de se ad', trarre: 'at dis sot con es ri pro', mettere: 'pro per am com tras scom di ri sotto s',
+ prendere: 'com sor ap ri intra', scrivere: 'de i pre tra sotto ri', vedere: 'pre ri prov', correre: 'soc per oc ri con de in tra dis ac',
+ vincere: 'con', chiudere: 'rac rin ri', rompere: 'inter cor', coprire: 's ri', uscire: 'ri', cogliere: 'rac ac', leggere: 'ri e',
+ muovere: 'com pro ri s', nascere: 'ri', vivere: 'soprav con', rendere: 'ar', giungere: 'rag ag', cadere: 'ac s de',
+ piacere: 'dis com', parire: 'ap com scom riap s', sedere: 'pos', valere: 'pre', tendere: 'at pre in es con', ridere: 'sor',
+ dividere: 'con', fare: 'soddis',
+};
+const DERIVED = {};
+for (const base in DERIV) for (const p of W(DERIV[base] || ' ').filter(Boolean)) DERIVED[p + base] = { base, prefix: p };
+// 'sparire' is an -isc- verb, not s+parire
+delete DERIVED.sparire;
+
+const E = {
+ pres: { are: W('o i a iamo ate ano'), ere: W('o i e iamo ete ono'), ire: W('o i e iamo ite ono'), isc: W('isco isci isce iamo ite iscono') },
+ rem: { are: W('ai asti ò ammo aste arono'), ere: W('ei esti é emmo este erono'), ire: W('ii isti ì immo iste irono') },
+ cong: { are: W('i i i iamo iate ino'), ere: W('a a a iamo iate ano'), ire: W('a a a iamo iate ano'), isc: W('isca isca isca iamo iate iscano') },
+ imp: W('vo vi va vamo vate vano'), fut: W('ò ai à emo ete anno'), cond: W('ei esti ebbe emmo este ebbero'), ci: W('ssi ssi sse ssimo ste ssero'),
+};
+const V = { are: 'a', ere: 'e', ire: 'i' };
+
+function join(stem, end, cls, inf) {
+  if (cls !== 'are') return stem + end;
+  if (STRESSED_I.has(inf)) return (/i$/.test(stem) && /^ia/.test(end)) ? stem.slice(0, -1) + end : stem + end;
+  if (/[cg]$/.test(stem) && /^[ei]/.test(end)) return stem + 'h' + end;
+  if (/[cg]i$/.test(stem) && /^[ei]/.test(end)) return stem.slice(0, -1) + end;
+  if (/i$/.test(stem) && /^i/.test(end)) return stem.slice(0, -1) + end;
+  return stem + end;
+}
+
+function regular(inf, cls, stem) {
+  const isc = cls === 'ire' && ISC.has(inf);
+  const k = isc ? 'isc' : cls;
+  const j = e => join(stem, e, cls, inf);
+  const X = stem + V[cls];
+  const pres = E.pres[k].map(j), cong = E.cong[k].map(j);
+  const futS = cls === 'are' ? j('er') : stem + (cls === 'ere' ? 'er' : 'ir');
+  return {
+    isc, X, pres, cong,
+    imperf: E.imp.map(e => X + e), rem: E.rem[cls].map(j),
+    fut: E.fut.map(e => futS + e), cond: E.cond.map(e => futS + e),
+    congImp: E.ci.map(e => X + e),
+    imper: [null, cls === 'are' ? j('a') : pres[1], cong[2], pres[3], pres[4], cong[5]],
+    ger: cls === 'are' ? j('ando') : stem + 'endo',
+    part: cls === 'are' ? j('ato') : cls === 'ere' ? stem + (/c$/.test(stem) ? 'iuto' : 'uto') : stem + 'ito',
+  };
+}
+
+function prefixSpec(s, p) {
+  const o = {};
+  for (const k in s) {
+    const v = s[k];
+    if (v == null || k === 'cls' || k === 'aux' || k === 'hidden') o[k] = v;
+    else if (Array.isArray(v)) o[k] = v.map(x => x == null ? x : (p + x).replace(/'$/, ''));
+    else if (typeof v === 'object') o[k] = { s: p + v.s };
+    else o[k] = p + v;
+  }
+  delete o.hidden;
+  return o;
+}
+
+function irregularFor(base) {
+  if (IRR[base] && !IRR[base].hidden) return { spec: IRR[base], model: base };
+  const d = DERIVED[base];
+  if (d && IRR[d.base]) return { spec: prefixSpec(IRR[d.base], d.prefix), model: IRR[d.base].hidden ? '-' + d.base : d.base };
+  return null;
+}
+
+function derivedCong(p) {
+  const s = p[0].replace(/o$/, '');
+  return [s + 'a', s + 'a', s + 'a', p[3], p[3].replace(/iamo$/, 'iate'), s + 'ano'];
+}
+
+const cache = {};
+function simple(base) {
+  if (cache[base]) return cache[base];
+  const ir = irregularFor(base);
+  const spec = ir ? ir.spec : {};
+  const cls = spec.cls || base.slice(-3);
+  const stem = base.slice(0, -3);
+  const R = regular(base, cls, stem);
+  const pres = spec.pres || R.pres;
+  const X = spec.impX || R.X;
+  const imperf = spec.imperf || E.imp.map(e => X + e);
+  let rem = R.rem;
+  if (Array.isArray(spec.rem)) rem = spec.rem;
+  else if (spec.rem) { const S = spec.rem.s; rem = [S + 'i', X + 'sti', S + 'e', X + 'mmo', X + 'ste', S + 'ero']; }
+  const fut = spec.fut ? E.fut.map(e => spec.fut + e) : R.fut;
+  const cond = spec.fut ? E.cond.map(e => spec.fut + e) : R.cond;
+  const cong = spec.cong || (spec.pres ? derivedCong(spec.pres) : R.cong);
+  const CX = spec.ciX || X;
+  const congImp = E.ci.map(e => CX + e);
+  let imper;
+  if ('imper' in spec && spec.imper === null) imper = null;
+  else imper = spec.imper || [null, (cls === 'are' && !spec.pres) ? R.imper[1] : pres[1], cong[2], pres[3], pres[4], cong[5]];
+  const out = {
+    ir, spec, cls, stem, R, isc: R.isc && !spec.pres,
+    t: { pres, imperf, rem, fut, cond, cong, congImp, imper },
+    ger: spec.ger || R.ger, part: spec.part || R.part,
+    aux: spec.aux || (ESSERE.has(base) ? 'essere' : 'avere'),
+  };
+  return (cache[base] = out);
+}
+
+function agree(p, plural) {
+  if (!/o$/.test(p)) return p;
+  const s = p.slice(0, -1);
+  return plural ? s + 'i/e' : s + 'o/a';
+}
+const clean = t => t.replace(/\/[ae]\b/g, '');
+
+function normalize(raw) {
+  return (raw || '').toLowerCase().normalize('NFC').trim().replace(/[’`´]/g, "'").replace(/\s+/g, '');
+}
+
+function conjugate(raw) {
+  const s = normalize(raw);
+  if (!s) return { error: 'Tape un verbe à l’infinitif, par exemple « parlare ».' };
+  let refl = false, base = s;
+  if (/rsi$/.test(s) && s.length > 4) {
+    refl = true;
+    const r = s.slice(0, -2);
+    base = irregularFor(r + 're') ? r + 're' : r + 'e';
+  }
+  if (!/(are|ere|ire|rre)$/.test(base) || base.length < 4)
+    return { error: `« ${raw.trim()} » n’est pas un infinitif italien. Les infinitifs finissent en -are, -ere, -ire (ou -arsi, -ersi, -irsi).` };
+  const S = simple(base);
+  if (/rre$/.test(base) && !S.ir)
+    return { error: `Je ne connais pas « ${base} ». Les verbes en -rre sont tous irréguliers : essaie porre, tradurre, trarre ou un dérivé.` };
+
+  const aux = refl ? 'essere' : S.aux;
+  const A = simple(aux).t;
+  const pS = aux === 'essere' ? agree(S.part, false) : S.part;
+  const pP = aux === 'essere' ? agree(S.part, true) : S.part;
+  const comp = forms => forms.map((a, i) => a + ' ' + (i < 3 ? pS : pP));
+  const R = S.ir ? regular(base, S.cls, S.stem) : null;
+  const rf = (arr) => refl ? arr.map((f, i) => f == null ? f : RIFL[i] + ' ' + f) : arr;
+  const reflImper = arr => arr.map((f, i) => {
+    if (f == null) return null;
+    if (i === 1) return f.endsWith("'") ? f.slice(0, -1) + 'tti' : f + 'ti';
+    if (i === 3) return f + 'ci';
+    if (i === 4) return f + 'vi';
+    return 'si ' + f;
+  });
+
+  const mk = (key, name, fr, forms, opts = {}) => {
+    const pre = opts.che ? 'che ' : '';
+    const rows = forms.map((f, i) => {
+      if (f == null) return null;
+      const irr = !!(R && opts.simple && R[key] && R[key][i] !== S.t[key][i]);
+      const p = opts.imper ? ['', 'tu', 'Lei', 'noi', 'voi', 'Loro'][i] : pre + PERS[i];
+      const sayP = opts.imper ? '' : (pre + PERS[i].replace('lui/lei', 'lui') + ' ');
+      const fr = frT && frT[key] ? frT[key][i] : null;
+      return { p, f, irr, say: sayP + clean(f), fr };
+    }).filter(Boolean);
+    return { key, name, fr, compound: !opts.simple, rows };
+  };
+
+  const g = GLOSS[s] || GLOSS[base] || '';
+  const FRN = (typeof module !== 'undefined' && module.exports) ? require('./french.js') : G.Francese;
+  let frT = null;
+  try { frT = FRN && g ? FRN.tables(g) : null; } catch (e) { frT = null; }
+  const t = S.t;
+  const moods = [
+    { name: 'Indicativo', fr: 'Indicatif', tenses: [
+      mk('pres', 'Presente', 'Présent', rf(t.pres), { simple: 1 }),
+      mk('imperf', 'Imperfetto', 'Imparfait', rf(t.imperf), { simple: 1 }),
+      mk('rem', 'Passato remoto', 'Passé simple', rf(t.rem), { simple: 1 }),
+      mk('fut', 'Futuro semplice', 'Futur simple', rf(t.fut), { simple: 1 }),
+      mk('pp', 'Passato prossimo', 'Passé composé', rf(comp(A.pres))),
+      mk('tpp', 'Trapassato prossimo', 'Plus-que-parfait', rf(comp(A.imperf))),
+      mk('tpr', 'Trapassato remoto', 'Passé antérieur', rf(comp(A.rem))),
+      mk('fa', 'Futuro anteriore', 'Futur antérieur', rf(comp(A.fut))),
+    ] },
+    { name: 'Congiuntivo', fr: 'Subjonctif', tenses: [
+      mk('cong', 'Presente', 'Présent', rf(t.cong), { simple: 1, che: 1 }),
+      mk('congImp', 'Imperfetto', 'Imparfait', rf(t.congImp), { simple: 1, che: 1 }),
+      mk('cp', 'Passato', 'Passé', rf(comp(A.cong)), { che: 1 }),
+      mk('ctp', 'Trapassato', 'Plus-que-parfait', rf(comp(A.congImp)), { che: 1 }),
+    ] },
+    { name: 'Condizionale', fr: 'Conditionnel', tenses: [
+      mk('cond', 'Presente', 'Présent', rf(t.cond), { simple: 1 }),
+      mk('condp', 'Passato', 'Passé', rf(comp(A.cond))),
+    ] },
+  ];
+  const imper = t.imper ? mk('imper', 'Imperativo', 'Impératif', refl ? reflImper(t.imper) : t.imper, { simple: 1, imper: 1 }) : null;
+
+  const auxInf = aux === 'essere' ? 'essere' : 'aver';
+  const indef = [
+    { name: 'Infinito presente', fr: 'Infinitif', f: refl ? s : base },
+    { name: 'Infinito passato', fr: 'Infinitif passé', f: refl ? 'essersi ' + pS : auxInf + ' ' + pS },
+    { name: 'Gerundio presente', fr: 'Gérondif', f: refl ? S.ger + 'si' : S.ger, irr: !!(R && R.ger !== S.ger) },
+    { name: 'Gerundio passato', fr: 'Gérondif passé', f: refl ? 'essendosi ' + pS : (aux === 'essere' ? 'essendo ' : 'avendo ') + pS },
+    { name: 'Participio passato', fr: 'Participe passé', f: S.part, irr: !!(R && R.part !== S.part) },
+  ].map((x, i) => ({ ...x, say: clean(x.f), fr: frT ? frT.indef[i] : null }));
+
+  let group = { are: '1er groupe · -are', ere: '2e groupe · -ere', ire: '3e groupe · -ire' }[base.slice(-3)] || '2e groupe · -rre (forme contractée)';
+  if (S.isc) group = '3e groupe · -ire en -isc-';
+  let auxNote = '';
+  if (!refl && ALSO_AVERE.has(base)) auxNote = 'Prend avere quand il a un complément d’objet (ho salito le scale).';
+  if (!refl && ALSO_ESSERE.has(base)) auxNote = 'Prend essere quand il n’a pas de complément d’objet (il film è finito).';
+
+  return {
+    input: s, inf: refl ? s : base, base, refl, cls: S.cls, isc: S.isc, aux, auxNote, group,
+    irregular: !!S.ir, model: S.ir && S.ir.model !== base ? S.ir.model : null,
+    known: !!S.ir || !!GLOSS[s] || !!GLOSS[base],
+    gloss: refl && !GLOSS[s] && g ? g + ' (forme pronominale)' : g,
+    ger: S.ger, part: S.part, moods, imper, indef,
+  };
+}
+
+const GLOSS = {};
+`essere=être;avere=avoir;andare=aller;venire=venir;fare=faire;dire=dire;dare=donner;stare=être, rester, aller (santé);potere=pouvoir;volere=vouloir;
+dovere=devoir;sapere=savoir;uscire=sortir;riuscire=réussir, parvenir à;bere=boire;tenere=tenir;rimanere=rester;morire=mourir;nascere=naître;
+piacere=plaire;dispiacere=déplaire, regretter;tacere=se taire;vedere=voir;prendere=prendre;mettere=mettre;leggere=lire;scrivere=écrire;chiudere=fermer;
+correre=courir;decidere=décider;chiedere=demander;rispondere=répondre;perdere=perdre;ridere=rire;sorridere=sourire;vincere=gagner, vaincre;
+convincere=convaincre;vivere=vivre;conoscere=connaître;crescere=grandir, croître;scendere=descendre;spendere=dépenser;accendere=allumer;
+rendere=rendre;scegliere=choisir;cogliere=cueillir, saisir;raccogliere=ramasser, récolter;accogliere=accueillir;togliere=enlever;salire=monter;
+apparire=apparaître;comparire=apparaître, comparaître;scomparire=disparaître;sparire=disparaître;aprire=ouvrir;coprire=couvrir;scoprire=découvrir;
+offrire=offrir;soffrire=souffrir;cadere=tomber;accadere=arriver, se produire;tradurre=traduire;produrre=produire;condurre=conduire;
+ridurre=réduire;introdurre=introduire;porre=poser, mettre;proporre=proposer;comporre=composer;esporre=exposer;imporre=imposer;supporre=supposer;
+trarre=tirer;attrarre=attirer;distrarre=distraire;sottrarre=soustraire;estrarre=extraire;sedere=être assis;valere=valoir;muovere=bouger, mouvoir;
+giungere=arriver, parvenir;raggiungere=rejoindre, atteindre;aggiungere=ajouter;piangere=pleurer;dipingere=peindre;spingere=pousser;rompere=casser;
+interrompere=interrompre;nascondere=cacher;succedere=arriver, succéder;discutere=discuter;dipendere=dépendre;difendere=défendre;offendere=offenser;
+uccidere=tuer;dividere=diviser, partager;condividere=partager;correggere=corriger;proteggere=protéger;distruggere=détruire;assumere=embaucher, assumer;
+esprimere=exprimer;spegnere=éteindre;riempire=remplir;piovere=pleuvoir;promettere=promettre;permettere=permettre;ammettere=admettre;smettere=arrêter (de);
+comprendere=comprendre;sorprendere=surprendre;riprendere=reprendre;descrivere=décrire;iscrivere=inscrire;prevedere=prévoir;rivedere=revoir;
+ottenere=obtenir;mantenere=maintenir, garder;contenere=contenir;sostenere=soutenir;appartenere=appartenir;ritenere=estimer, considérer;
+avvenire=avoir lieu;divenire=devenir;intervenire=intervenir;provenire=provenir;svenire=s’évanouir;convenire=convenir;attendere=attendre;
+intendere=entendre, avoir l’intention;pretendere=prétendre, exiger;
+parlare=parler;amare=aimer;mangiare=manger;cercare=chercher;pagare=payer;studiare=étudier;lavorare=travailler;abitare=habiter;comprare=acheter;
+guardare=regarder;ascoltare=écouter;aspettare=attendre;chiamare=appeler;cominciare=commencer;iniziare=commencer;cambiare=changer;viaggiare=voyager;
+giocare=jouer;arrivare=arriver;tornare=revenir, rentrer;entrare=entrer;restare=rester;diventare=devenir;sembrare=sembler;costare=coûter;
+pensare=penser;trovare=trouver;portare=porter, apporter;lasciare=laisser;imparare=apprendre;insegnare=enseigner;cantare=chanter;ballare=danser;
+camminare=marcher;nuotare=nager;cucinare=cuisiner;preparare=préparer;ricordare=se rappeler;dimenticare=oublier;sperare=espérer;provare=essayer;
+usare=utiliser;spiegare=expliquer;mandare=envoyer;inviare=envoyer;sciare=skier;tagliare=couper;passare=passer;lavare=laver;aiutare=aider;
+chiacchierare=bavarder;telefonare=téléphoner;visitare=visiter;mostrare=montrer;pranzare=déjeuner;cenare=dîner;fermare=arrêter;volare=voler (avion);
+durare=durer;bastare=suffire;mancare=manquer;capitare=arriver, se produire;scappare=s’enfuir;guidare=conduire;noleggiare=louer (voiture);
+prenotare=réserver;pagare=payer;toccare=toucher;dimagrire=maigrir;ingrassare=grossir;invecchiare=vieillir;
+credere=croire;ricevere=recevoir;vendere=vendre;temere=craindre;ripetere=répéter;battere=battre;godere=jouir, profiter;cedere=céder;
+dormire=dormir;partire=partir;sentire=entendre, sentir;servire=servir;seguire=suivre;vestire=habiller;fuggire=fuir;
+finire=finir;capire=comprendre;preferire=préférer;pulire=nettoyer;spedire=expédier;costruire=construire;colpire=frapper;sostituire=remplacer;
+unire=unir;obbedire=obéir;gestire=gérer;impedire=empêcher;suggerire=suggérer;tradire=trahir;guarire=guérir;arrossire=rougir;fornire=fournir;
+garantire=garantir;inserire=insérer;restituire=rendre, restituer;stabilire=établir;trasferire=transférer;contribuire=contribuer;definire=définir;
+distribuire=distribuer;agire=agir;chiarire=clarifier;impazzire=devenir fou;diminuire=diminuer;punire=punir;
+alzarsi=se lever;chiamarsi=s’appeler;lavarsi=se laver;svegliarsi=se réveiller;divertirsi=s’amuser;vestirsi=s’habiller;sedersi=s’asseoir;
+sentirsi=se sentir;ricordarsi=se souvenir;preoccuparsi=s’inquiéter;sposarsi=se marier;arrabbiarsi=se fâcher;addormentarsi=s’endormir;
+trovarsi=se trouver;fermarsi=s’arrêter;riposarsi=se reposer;farsi=se faire;mettersi=se mettre;innamorarsi=tomber amoureux;annoiarsi=s’ennuyer;
+pettinarsi=se coiffer;rilassarsi=se détendre;perdersi=se perdre;muoversi=bouger;sbrigarsi=se dépêcher;laurearsi=obtenir son diplôme`
+  .split(';').forEach(p => { const [k, v] = p.split('='); if (k && v) GLOSS[k.trim()] = v.trim(); });
+
+const MODELS = W(`essere avere parlare credere dormire finire andare fare venire stare dare dire potere volere dovere sapere
+ uscire bere prendere mettere vedere leggere scrivere mangiare cercare studiare alzarsi rimanere tradurre porre`);
+
+function suggestions() {
+  const set = new Set([...Object.keys(GLOSS), ...Object.keys(IRR).filter(k => !IRR[k].hidden), ...Object.keys(DERIVED)]);
+  return [...set].sort((a, b) => a.localeCompare(b, 'it'));
+}
+
+const API = { conjugate, suggestions, MODELS, GLOSS };
+if (typeof module !== 'undefined' && module.exports) module.exports = API; else G.Coniugatore = API;
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script>
+(function () {
+  const C = window.Coniugatore;
+  const $ = s => document.querySelector(s);
+  const out = $('#out'), input = $('#verbo');
+  const SPK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg>';
+  const PLAY = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>';
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  // datalist + chips
+  $('#verbi').innerHTML = C.suggestions().map(v => `<option value="${esc(v)}">`).join('');
+  $('#chips').innerHTML = C.MODELS.map(v => `<button class="chip" type="button" data-v="${v}">${v}</button>`).join('');
+
+  // ---- speech ----
+  const synth = 'speechSynthesis' in window ? window.speechSynthesis : null;
+  let voice = null, rate = 0.95, speakingEl = null;
+  const tts = $('#tts');
+  function pickVoice() {
+    if (!synth) return;
+    const vs = synth.getVoices();
+    voice = vs.find(v => /^it[-_]IT/i.test(v.lang) && /google|natural|premium|enhanced/i.test(v.name))
+         || vs.find(v => /^it[-_]IT/i.test(v.lang)) || vs.find(v => /^it/i.test(v.lang)) || null;
+    if (vs.length && !voice) {
+      tts.hidden = false;
+      tts.textContent = 'Aucune voix italienne trouvée sur cet appareil : la lecture utilisera la voix par défaut. Sur Android : Paramètres › Synthèse vocale › installer « Italien ». Sur iPhone : Réglages › Accessibilité › Contenu énoncé › Voix.';
+    } else tts.hidden = true;
+  }
+  if (!synth) { tts.hidden = false; tts.textContent = 'Ce navigateur ne permet pas la lecture audio. Ouvre la page dans Chrome ou Safari pour entendre les verbes.'; }
+  else { pickVoice(); synth.addEventListener?.('voiceschanged', pickVoice); }
+
+  function mark(el) { if (speakingEl) speakingEl.classList.remove('speaking'); speakingEl = el; if (el) el.classList.add('speaking'); }
+  function speak(items) {
+    if (!synth) return;
+    synth.cancel(); mark(null);
+    items.forEach((it, i) => {
+      const u = new SpeechSynthesisUtterance(it.text);
+      u.lang = 'it-IT'; if (voice) u.voice = voice; u.rate = rate;
+      u.onstart = () => mark(it.el || null);
+      u.onend = u.onerror = () => { if (i === items.length - 1) mark(null); };
+      synth.speak(u);
+    });
+  }
+  document.querySelectorAll('.speed button').forEach(b => b.addEventListener('click', () => {
+    rate = +b.dataset.rate;
+    document.querySelectorAll('.speed button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  }));
+
+  const frBtn = $('#frBtn');
+  function setFr(on) {
+    document.body.classList.toggle('no-fr', !on);
+    frBtn.setAttribute('aria-pressed', String(on));
+    frBtn.textContent = 'Français : ' + (on ? 'oui' : 'non');
+    try { localStorage.setItem('bescherelle:fr', on ? '1' : '0'); } catch (e) {}
+  }
+  frBtn.addEventListener('click', () => setFr(frBtn.getAttribute('aria-pressed') !== 'true'));
+  try { setFr(localStorage.getItem('bescherelle:fr') !== '0'); } catch (e) { setFr(true); }
+
+  // ---- render ----
+  function rowsHTML(rows) {
+    return '<ol>' + rows.map((r, i) => `<li><button class="row" type="button" data-i="${i}" data-say="${esc(r.say)}"><span class="p">${esc(r.p)}</span><span class="fw"><span class="f${r.irr ? ' irr' : ''}">${esc(r.f)}</span>${r.fr ? `<span class="fr">${esc(r.fr)}</span>` : ''}</span><span class="ic">${SPK}</span></button></li>`).join('') + '</ol>';
+  }
+  function card(t, extra = '') {
+    return `<article class="card${t.compound ? ' compound' : ''} ${extra}" data-key="${esc(t.key || 'indef')}"><header><h3>${esc(t.name)}<small>${esc(t.fr)}</small></h3><button class="play" type="button" aria-label="Écouter ${esc(t.name)}">${PLAY}</button></header>${rowsHTML(t.rows)}</article>`;
+  }
+  function render(r) {
+    if (r.error) { out.innerHTML = `<p class="err">${esc(r.error)}</p>`; return; }
+    const facts = [
+      ['Auxiliaire', r.aux], ['Gérondif', r.indef[2].f], ['Participe passé', r.part],
+    ];
+    if (r.model) facts.push(['Modèle', r.model]);
+    let notes = '';
+    if (r.auxNote) notes += `<p class="note">${esc(r.auxNote)}</p>`;
+    if (!r.known) notes += `<p class="note">Ce verbe n’est pas dans ma liste : il est conjugué selon le modèle régulier.</p>`;
+    let html = `<section class="hero">
+      <p class="eyebrow">${esc(r.group)}${r.refl ? ' · pronominal' : ''}${r.irregular ? ' · irrégulier' : ''}</p>
+      <div class="inf-row"><h1 class="inf">${esc(r.inf)}</h1>
+        <button class="say-big" type="button" data-say="${esc(r.inf)}">${SPK}Ascolta</button></div>
+      ${r.gloss ? `<p class="gloss">${esc(r.gloss)}</p>` : ''}
+      <dl class="facts">${facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>
+      ${notes}
+      ${r.irregular ? '<p class="legend"><i>rouge</i> = forme irrégulière</p>' : ''}
+    </section>`;
+    for (const m of r.moods) {
+      const che = m.name === 'Congiuntivo' ? 'che' : '';
+      html += `<section class="mood"><h2>${m.name}<span>${m.fr}</span></h2><div class="grid">${m.tenses.map(t => card(t, che)).join('')}</div></section>`;
+    }
+    html += `<section class="mood"><h2>Imperativo<span>Impératif</span></h2><div class="grid">`;
+    html += r.imper ? card(r.imper, 'imp') : `<article class="card"><header><h3>Imperativo<small>Impératif</small></h3></header><p class="empty">Pas d’impératif pour ce verbe.</p></article>`;
+    const ind = { name: 'Forme indefinite', fr: 'Formes nominales', compound: false, rows: r.indef.map(x => ({ p: x.fr, f: x.f, irr: x.irr, say: x.say })) };
+    html += card(ind, 'indef') + '</div></section>';
+    out.innerHTML = html;
+  }
+
+  function go(v, push = true) {
+    const r = C.conjugate(v);
+    render(r);
+    if (!r.error) {
+      input.value = r.inf;
+      document.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-current', String(c.dataset.v === r.inf)));
+      try { localStorage.setItem('bescherelle:last', r.inf); } catch (e) {}
+      if (push && /^[a-z]+$/.test(r.inf)) { try { history.replaceState(null, '', '#' + r.inf); } catch (e) {} }
+    }
+  }
+
+  // ---- events ----
+  $('#f').addEventListener('submit', e => { e.preventDefault(); go(input.value); input.blur(); window.scrollTo({ top: 0 }); });
+  $('#chips').addEventListener('click', e => { const b = e.target.closest('.chip'); if (b) { go(b.dataset.v); window.scrollTo({ top: 0 }); } });
+  $('#caso').addEventListener('click', () => {
+    const all = C.suggestions(); go(all[Math.floor(Math.random() * all.length)]); window.scrollTo({ top: 0 });
+  });
+  out.addEventListener('click', e => {
+    const row = e.target.closest('.row');
+    if (row) { speak([{ text: row.dataset.say, el: row }]); return; }
+    const big = e.target.closest('.say-big');
+    if (big) { speak([{ text: big.dataset.say }]); return; }
+    const play = e.target.closest('.play');
+    if (play) {
+      const rows = [...play.closest('.card').querySelectorAll('.row')];
+      speak(rows.map(el => ({ text: el.dataset.say, el })));
+    }
+  });
+
+  // Deep links from the PDF: #verbo, #verbo.tempo or #verbo.tempo.riga
+  const cue = $('#cue'), cueBtn = $('#cueBtn');
+  let cueItems = null;
+  cueBtn.addEventListener('click', () => { if (cueItems) speak(cueItems); cue.hidden = true; });
+  function target(key, idx) {
+    const cardEl = out.querySelector(`.card[data-key="${key}"]`);
+    if (!cardEl) return;
+    cardEl.classList.add('target');
+    const rows = [...cardEl.querySelectorAll('.row')];
+    const one = idx != null && rows[idx];
+    cueItems = one ? [{ text: one.dataset.say, el: one }] : rows.map(el => ({ text: el.dataset.say, el }));
+    if (one) one.classList.add('speaking');
+    const label = one ? one.dataset.say : cardEl.querySelector('h3').firstChild.textContent;
+    cueBtn.innerHTML = SPK + '<span>Écouter : ' + esc(label) + '</span>';
+    cue.hidden = false;
+    setTimeout(() => cardEl.scrollIntoView({ block: 'center' }), 60);
+  }
+  out.addEventListener('click', () => { cue.hidden = true; }, true);
+
+  let start = 'andare', tKey = null, tIdx = null;
+  const h = (location.hash || '').slice(1);
+  const m = h.match(/^([a-z]+)(?:\.([A-Za-z]+)(?:\.(\d))?)?$/);
+  if (m) { start = m[1]; tKey = m[2] || null; tIdx = m[3] != null ? +m[3] : null; }
+  else { try { start = localStorage.getItem('bescherelle:last') || start; } catch (e) {} }
+  go(start, false);
+  if (tKey) target(tKey, tIdx);
+})();
+</script>
+
+<script>
+// PWA: offline cache + install button
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+}
+(function () {
+  const btn = document.getElementById('install');
+  let deferred = null;
+  const standalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+  window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferred = e; if (!standalone) btn.hidden = false; });
+  btn.addEventListener('click', async () => {
+    if (!deferred) return;
+    deferred.prompt();
+    try { await deferred.userChoice; } catch (e) {}
+    deferred = null; btn.hidden = true;
+  });
+  window.addEventListener('appinstalled', () => { btn.hidden = true; });
+  const ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  if (ios && !standalone) {
+    let seen = false; try { seen = localStorage.getItem('bescherelle:iosHint') === '1'; } catch (e) {}
+    if (!seen) { const h = document.getElementById('iosHint'); h.hidden = false; try { localStorage.setItem('bescherelle:iosHint', '1'); } catch (e) {} }
+  }
+})();
+</script>
+</body>
+</html>

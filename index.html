@@ -5,8 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Il mio Bescherelle</title>
 <meta name="description" content="Conjugaison italienne complète, traduite en français et prononcée.">
-<meta name="theme-color" content="#F3F4F7" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0E121B" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#002D7B">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" href="/icons/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
@@ -54,6 +53,8 @@ button { font: inherit; color: inherit; }
 
 .masthead { padding-block: 22px 6px; display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .brand { font-family: var(--display); font-style: italic; font-weight: 600; font-size: 1.6rem; letter-spacing: -0.01em; margin: 0; }
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand img { width: 56px; height: 56px; flex: none; }
 .brand b { font-style: normal; color: var(--accent); font-weight: 700; }
 .tag { margin: 0; color: var(--muted); font-size: .85rem; }
 
@@ -142,7 +143,7 @@ footer em { color: var(--ink); }
 <body>
 
 <div class="wrap masthead">
-  <p class="brand">Il mio <b>B</b>escherelle</p>
+  <p class="brand"><img src="/icons/logo.png" alt="" width="56" height="56"><span>Il mio <b>B</b>escherelle</span></p>
   <p class="tag">Les verbes italiens, conjugués, traduits et prononcés</p>
 </div>
 

@@ -1,6 +1,6 @@
 // Il mio Bescherelle — service worker. Bump VERSION to push an update.
-const VERSION = 'bescherelle-v5';
-const SHELL = ['/', '/index.html', '/manifest.webmanifest', '/icons/icon-192.png', '/icons/icon-512.png', '/icons/maskable-512.png', '/icons/apple-touch-icon.png', '/icons/favicon.png', '/icons/logo.png'];
+const VERSION = 'bescherelle-v6';
+const SHELL = ['/', '/index.html', '/manifest.webmanifest', '/icons/icon-192.png', '/icons/icon-512.png', '/icons/maskable-512.png', '/icons/apple-touch-icon.png', '/icons/favicon.png', '/icons/logo.png', '/ai-key.js', '/ai-config.js'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(VERSION).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));

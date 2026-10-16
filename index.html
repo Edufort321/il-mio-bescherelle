@@ -925,6 +925,17 @@ if ('serviceWorker' in navigator) {
   go.addEventListener('click', install);
   later.addEventListener('click', () => { hide(); try { localStorage.setItem('bescherelle:snooze', String(Date.now() + 3 * 864e5)); } catch (e) {} });
   window.addEventListener('appinstalled', () => { btn.hidden = true; hide(); });
+  window.addEventListener('beforeinstallprompt', () => { txt.textContent = 'Ajoute l’app à ton écran d’accueil. Elle fonctionne aussi sans Internet.'; go.textContent = 'Installer l’app'; go.onclick = null; });
+  // le navigateur ne propose rien (Samsung Internet, invite déjà refusée…) : on montre la marche à suivre
+  window.addEventListener('load', () => setTimeout(() => {
+    if (deferred || standalone || snoozed() || /iphone|ipad|ipod/i.test(navigator.userAgent)) return;
+    const ua = navigator.userAgent;
+    txt.textContent = /SamsungBrowser/i.test(ua) ? 'Touche le menu ≡ en bas, puis « Ajouter la page à » › « Écran d’accueil ».'
+      : /android/i.test(ua) ? 'Touche le menu ⋮ en haut à droite, puis « Installer l’application » (ou « Ajouter à l’écran d’accueil »).'
+      : 'Clique l’icône d’installation à droite de la barre d’adresse, ou menu ⋮ › « Installer ».';
+    go.textContent = 'Compris'; go.onclick = () => later.click();
+    sheet.hidden = false;
+  }, 2500));
   const ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
   if (ios && !standalone && !snoozed()) {
     txt.textContent = 'Touche Partager (carré avec flèche), puis « Sur l’écran d’accueil ».';
